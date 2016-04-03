@@ -8,11 +8,7 @@ class Tweets():
     """
     processes incoming tweets for hashtags and timestamps
     """
-    def __init__(self, test_mode = False):
-        if test_mode:
-            path =  "../tweet_input/test_tweets.txt"
-        else:
-            path = "../tweet_input/tweets.txt"
+    def __init__(self, path):
         self.tweets_path = path
 
     def extract_hashtags(self, tweet_dict):
