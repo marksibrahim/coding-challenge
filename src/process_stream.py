@@ -32,13 +32,24 @@ class Tweets():
         """
         with open(self.tweets_path, 'r') as f:
             for tweet in f:
-                tweet_dict = json.loads(tweet)
-                #skip if tweets contains 1 or fewer hashtags
-                if len(tweet_dict["entities"]["hashtags"]) < 2:
+                try:
+                    tweet_dict = json.loads(tweet)
+                except ValueError:
+                    #skip lines that can't be json decoded
                     continue
-                hashtags = self.extract_hashtags(tweet_dict)
-                timestamp = tweet_dict["created_at"]
-                yield (timestamp, hashtags)
+
+                try:
+                    #skip if tweets contains 1 or fewer hashtags
+                    if len(tweet_dict["entities"]["hashtags"]) < 2:
+                        continue
+                    hashtags = self.extract_hashtags(tweet_dict)
+                    timestamp = tweet_dict["created_at"]
+                    yield (timestamp, hashtags)
+                except KeyError:
+                    #skip lines in data not containg tweets
+                        # like rate limit lines mentioned in challenge
+                    continue
+
             
 
 
