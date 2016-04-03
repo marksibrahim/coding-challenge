@@ -2,13 +2,16 @@
 process incoming tweets in tweets.txt
 returning the hashtag and timestamp of each
 """
-import json
+import json, os
+
+in_path = os.path.join( os.path.dirname( __file__ ), "..", 
+        "tweet_input/tweets.txt")
 
 class Tweets():
     """
     processes incoming tweets for hashtags and timestamps
     """
-    def __init__(self, path):
+    def __init__(self, path=in_path):
         self.tweets_path = path
 
     def extract_hashtags(self, tweet_dict):

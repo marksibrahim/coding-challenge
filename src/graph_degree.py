@@ -6,7 +6,7 @@ from itertools import islice
 
 import process_stream
 import pandas as pd
-import sys
+import sys, os
 
 class Graph():
     """
@@ -103,7 +103,7 @@ class Graph():
         """
         write degree with two decimal precision to output
         """
-        degree_str = str(round(avg_degree, 2))
+        degree_str = '{:.2f}'.format(round(avg_degree, 2))
         with open(self.out_path, "a") as f:
             f.write(degree_str + "\n")
 
@@ -117,7 +117,8 @@ class Graph():
         self.write_degree_to_output(self.average_degree())
 
         #stream tweets; skip first entry (processed during instantiation)
-        for timestamp, hashtags in islice(self.tweets_stream, 1, None):
+            # generator state is no on second element 
+        for timestamp, hashtags in self.tweets_stream:
             time = pd.Timestamp(timestamp)
             if time > self.min_time:
                 self.add_hashtags(time, hashtags)
@@ -125,8 +126,12 @@ class Graph():
             
 
 if __name__ == "__main__":
-    in_path = sys.argv[0]
-    out_path = sys.argv[1]
+    #in_path = sys.argv[0]
+    #out_path = sys.argv[1]
+    in_path = os.path.join( os.path.dirname( __file__ ), "..", 
+            "tweet_input/tweets.txt")
+    out_path = os.path.join( os.path.dirname( __file__ ), "..", 
+            "tweet_output/output.txt")
     g = Graph(in_path, out_path)
     g.run()
 

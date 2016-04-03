@@ -4,6 +4,7 @@ test average degree of hashtag graph generated
 
 from itertools import islice
 
+import os
 import pandas as pd
 import process_stream
 import graph_degree
@@ -57,6 +58,32 @@ def test_first_edges():
 def test_df_initialization():
     assert graph.df.shape[0] > 0 
 
+
 # Test sample graph
 
+sample_tweets = """
+{"entities": {"hashtags":  [{"text": "Apache"},{"text": "Hadoop"}, {"text: "Storm"}]}, "created_at": "Thu Mar 24 17:51:15 +0000 2016"} 
+{"entities": {"hashtags": [{"text": "Apache"}]}, "created_at": "Thu Mar 24 17:51:30 +0000 2016"}
+{"entities": {"hashtags": [{"text": "Flink"}, {"text":"Spark"}]}, "created_at":"Thu Mar 24 17:51:55 +0000 2016"}
+{"entities": {"hashtags": [{"text": "Spark"} , {"text": "HBase"}]}, "created_at":"Thu Mar 24 17:51:58 +0000 2016"}
+{"entities": {"hashtags": [{"text": "Hadoop"}, {"text": "Apache"}]}, "created_at":"Thu Mar 24 17:52:12 +0000 2016"}
+{"entities": {"hashtags": [{"text": "Flink"}, {"text": "HBase"}]}, "created_at":"Thu Mar 24 17:52:10 +0000 2016"}
+"""
 
+expected_out = """
+1.00
+2.00
+2.00
+2.00
+2.00
+1.66
+2.00
+"""
+
+#write sample to file
+in_path = "../tweet_input/tweets.txt"
+out_path = "../tweet_output/output.txt"
+with open(in_path, "w") as f:
+    f.writelines(sample_tweets)
+
+os.system("python graph.py")
