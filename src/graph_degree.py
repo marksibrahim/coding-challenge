@@ -6,7 +6,7 @@ from itertools import islice
 
 import process_stream
 import pandas as pd
-import sys, os
+import os
 
 class Graph():
     """
