@@ -1,3 +1,4 @@
+
 {"entities": {"hashtags":  [{"text": "Apache"},{"text": "Hadoop"}, {"text: "Storm"}]}, "created_at": "Thu Mar 24 17:51:15 +0000 2016"} 
 {"entities": {"hashtags": [{"text": "Apache"}]}, "created_at": "Thu Mar 24 17:51:30 +0000 2016"}
 {"entities": {"hashtags": [{"text": "Flink"}, {"text":"Spark"}]}, "created_at":"Thu Mar 24 17:51:55 +0000 2016"}
