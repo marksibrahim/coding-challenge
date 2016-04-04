@@ -18,6 +18,7 @@ class Graph():
         """
         initializes tweet stream
         """
+        self.out_path = out_path
         self.tweets_stream =  process_stream.Tweets(in_path).stream()
         #dataframe containing edges within 60-second window
             # initialize with first set of hashtags
@@ -26,9 +27,6 @@ class Graph():
                 "node2": first_edges[2]}).set_index("time")
         #initial timewindow
         self.min_time = self.df.index.max() - pd.Timedelta("60 sec")
-
-
-        self.out_path = out_path
 
     def edges_to_nodes(self, edges):
         """
@@ -93,7 +91,7 @@ class Graph():
         """
         computes the average degree in the graph
         """
-        total_degree = self.df.shape[0]*2
+        total_degree = self.df.drop_duplicates(subset=["node1", "node2"]).shape[0]*2
         number_nodes = len(self.df["node1"].append(self.df["node2"]).unique())
 
         average_degree = float(total_degree) / float(number_nodes)
@@ -122,12 +120,9 @@ class Graph():
             time = pd.Timestamp(timestamp)
             if time > self.min_time:
                 self.add_hashtags(time, hashtags)
-                self.write_degree_to_output(self.average_degree())
+            self.write_degree_to_output(self.average_degree())
             
-
 if __name__ == "__main__":
-    #in_path = sys.argv[0]
-    #out_path = sys.argv[1]
     in_path = os.path.join( os.path.dirname( __file__ ), "..", 
             "tweet_input/tweets.txt")
     out_path = os.path.join( os.path.dirname( __file__ ), "..", 
